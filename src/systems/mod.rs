@@ -6,6 +6,8 @@ mod render_menu;
 pub fn run_systems(state: &mut State) {
     let commands = &mut CommandBuffer::new();
     player_input::player_input(state, commands);
+
+    render_menu::draw_screen(state);
     //this is where you would run all the individual systems
     //get player input function
     //process interaction menu MOI if present

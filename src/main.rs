@@ -1,4 +1,5 @@
 mod prelude {
+    pub use crate::components::*;
     pub use crate::control_state::*;
     pub use crate::State;
     pub use bracket_lib::prelude::*;
