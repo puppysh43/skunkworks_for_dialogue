@@ -10,6 +10,7 @@ pub fn draw_screen(state: &mut State) {
 fn draw_interaction_menu(state: &mut State) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
+    //will need to go through and :wa
     draw_batch.submit(5000).expect("Batch Error");
 }
 
