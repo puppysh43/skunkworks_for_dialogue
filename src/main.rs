@@ -1,4 +1,5 @@
 mod prelude {
+    pub use crate::control_state::*;
     pub use crate::State;
     pub use bracket_lib::prelude::*;
     pub use hecs::*;
@@ -10,7 +11,7 @@ mod systems;
 pub struct State {
     ecs: World,
     key: Option<VirtualKeyCode>,
-    //controlstate:
+    controlstate: ControlState,
     // player: Entity,
     log: Vec<String>,
 }
@@ -21,6 +22,7 @@ impl State {
         Self {
             ecs,
             key: None,
+            controlstate: ControlState::SelectingInteraction,
             log,
         }
     }

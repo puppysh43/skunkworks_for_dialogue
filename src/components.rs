@@ -21,18 +21,44 @@ use crate::State;
 
 ///This is the base datatype for all of the engine's interaction menus.
 pub struct InteractionMenu {
+    header: String, //this is the string displayed that describes the object being interacted with
     options: Vec<IntMenuEntry>,
+}
+impl InteractionMenu {
+    pub fn new(header: String) -> Self {
+        InteractionMenu {
+            header,
+            options: Vec::new(),
+        }
+    }
+    pub fn add_entry(&mut self, entry: IntMenuEntry) {
+        self.options.push(entry);
+    }
+    pub fn get_entry(&self, index: usize) -> IntMenuEntry {
+        self.options[index].clone()
+    }
+}
+///This is the base datatype for every node
+#[derive(Clone, Debug)]
+pub struct IntMenuEntry {
+    entry_text: String, //this is the text displayed on the root level of the entry menu
+    vis_condition: Option<VisCondition>, //lets each entry have the option of being hidden unless a condition is met
+    c_and_c: Option<ChecksAndConsequences>, //function that looks at the world and edits
+    result: Option<ChoiceResult>,        //result of the choice
+    result_text: ResultText, //vec of different things that can be printed to the screen as a result, indexed by casting the result into a usize for accessing the vec of strings
 }
 //need to be able to
 type VisCondition = fn(&State) -> bool;
 type ChecksAndConsequences = fn(&State, &mut CommandBuffer);
 // type ResultText = Vec<String>;
-struct ResultText {
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ResultText {
     options: Vec<String>,
 }
 //need to be able to
 impl ResultText {
-    fn get(&self, choice: Option<ChoiceResult>) -> String {
+    pub fn get(&self, choice: Option<ChoiceResult>) -> String {
         //testing
         if choice.is_some() {
             //actually access the contents
@@ -53,11 +79,13 @@ impl ResultText {
         }
     }
 }
+#[derive(Clone, Copy, Debug, PartialEq)]
 enum DegreeOfSuccess {
     Failure,
     PartialSuccess,
     FullSuccess,
 }
+#[derive(Clone, Copy, Debug, PartialEq)]
 enum ChoiceResult {
     BinaryResult(bool),
     DegOfSuccess(DegreeOfSuccess),
@@ -65,11 +93,10 @@ enum ChoiceResult {
 //this will need to check the worldstate and then both produce a change in the world
 //(probably mostly by commandbuffer and NOT direct state access)
 //then there needs to be some sort of way to communicate between this and the
-///This is the base datatype for every node
-struct IntMenuEntry {
-    entry_text: String, //this is the text displayed on the root level of the entry menu
-    vis_condition: Option<VisCondition>, //lets each entry have the option of being hidden unless a condition is met
-    c_and_c: Option<ChecksAndConsequences>, //function that looks at the world and edits
-    result: Option<ChoiceResult>,        //result of the choice
-    result_text: ResultText, //vec of different things that can be printed to the screen as a result, indexed by casting the result into a usize for accessing the vec of strings
+
+///MOI to communicate what option
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct IntMenuMOI {
+    // int_menu_selected: usize,//this will be used later in the toy by
+    pub index: usize,
 }

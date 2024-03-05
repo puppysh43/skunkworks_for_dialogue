@@ -1,8 +1,11 @@
 use crate::prelude::*;
+mod interaction;
+mod player_input;
+mod render_menu;
 //this will hold all the systems run every tick!
 pub fn run_systems(state: &mut State) {
-    let command = CommandBuffer::new();
-
+    let commands = &mut CommandBuffer::new();
+    player_input::player_input(state, commands);
     //this is where you would run all the individual systems
     //get player input function
     //process interaction menu MOI if present
