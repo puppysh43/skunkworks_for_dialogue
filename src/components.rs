@@ -49,7 +49,7 @@ pub struct IntMenuEntry {
 }
 //need to be able to
 type VisCondition = fn(&State) -> bool;
-type ChecksAndConsequences = fn(&State, &mut CommandBuffer);
+type ChecksAndConsequences = fn(&State, &mut CommandBuffer) -> ChoiceResult;
 // type ResultText = Vec<String>;
 
 #[derive(Clone, Debug, PartialEq)]
