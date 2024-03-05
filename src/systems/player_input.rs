@@ -6,8 +6,8 @@ pub fn player_input(state: &mut State, commands: &mut CommandBuffer) {
 
     if key.is_some() {
         match control_state {
-            ControlState::SelectingInteraction => {
-                selecting_interaction_input(state, commands);
+            ControlState::InInteraction => {
+                interaction_input(state, commands);
             }
             ControlState::ReadingResult => {
                 reading_result(state);
@@ -16,7 +16,7 @@ pub fn player_input(state: &mut State, commands: &mut CommandBuffer) {
     }
 }
 
-fn selecting_interaction_input(state: &mut State, commands: &mut CommandBuffer) {
+fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
     let key = state.key;
     if key.is_some() {
         match key.unwrap() {

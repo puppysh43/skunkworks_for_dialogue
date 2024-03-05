@@ -23,7 +23,7 @@ impl State {
         Self {
             ecs,
             key: None,
-            controlstate: ControlState::SelectingInteraction,
+            controlstate: ControlState::InInteraction,
             log,
         }
     }
