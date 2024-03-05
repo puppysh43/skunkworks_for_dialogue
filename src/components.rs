@@ -47,10 +47,8 @@ pub struct IntMenuEntry {
     result: Option<ChoiceResult>,        //result of the choice
     result_text: ResultText, //vec of different things that can be printed to the screen as a result, indexed by casting the result into a usize for accessing the vec of strings
 }
-//need to be able to
 type VisCondition = fn(&State) -> bool;
-type ChecksAndConsequences = fn(&State, &mut CommandBuffer) -> ChoiceResult;
-// type ResultText = Vec<String>;
+type ChecksAndConsequences = fn(&State, &mut CommandBuffer) -> Option<ChoiceResult>;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct ResultText {

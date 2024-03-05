@@ -42,7 +42,8 @@ fn reading_result(state: &mut State) {
     if key.is_some() {
         match key.unwrap() {
             VirtualKeyCode::Escape | VirtualKeyCode::Space | VirtualKeyCode::Return => {
-                state.controlstate = ControlState::SelectingInteraction;
+                state.controlstate = ControlState::InInteraction;
+                //will also need to find and delete the response MOI
             }
             _ => {
                 //do nothing
