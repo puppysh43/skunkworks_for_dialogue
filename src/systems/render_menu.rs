@@ -10,7 +10,12 @@ pub fn draw_screen(state: &mut State) {
 fn draw_interaction_menu(state: &mut State) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
-    //will need to go through and :wa
+    //will need to go through and check to see which ones are visible
+    let mut int_menu_query = state.ecs.query::<&InteractionMenu>();
+    let valid_entries: Vec<String> = Vec::new();
+    for (_, int_menu) in int_menu_query.iter() {
+        
+    }
     draw_batch.submit(5000).expect("Batch Error");
 }
 

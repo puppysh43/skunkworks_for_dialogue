@@ -20,9 +20,10 @@ ex - "[strength check] try to push boulder"
 use crate::State;
 
 ///This is the base datatype for all of the engine's interaction menus.
+#[derive(Clone, Debug)]
 pub struct InteractionMenu {
     header: String, //this is the string displayed that describes the object being interacted with
-    options: Vec<IntMenuEntry>,
+    pub options: Vec<IntMenuEntry>,
 }
 impl InteractionMenu {
     pub fn new(header: String) -> Self {
@@ -37,6 +38,7 @@ impl InteractionMenu {
     pub fn get_entry(&self, index: usize) -> IntMenuEntry {
         self.options[index].clone()
     }
+    pub fn 
 }
 ///This is the base datatype for every node
 #[derive(Clone, Debug)]

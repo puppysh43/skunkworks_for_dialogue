@@ -9,6 +9,7 @@ mod components;
 mod control_state;
 mod systems;
 
+///The gamestate
 pub struct State {
     ecs: World,
     key: Option<VirtualKeyCode>,
