@@ -1,12 +1,16 @@
 mod prelude {
     pub use crate::components::*;
     pub use crate::control_state::*;
+    pub use crate::interactionmenus::*;
     pub use crate::State;
     pub use bracket_lib::prelude::*;
     pub use hecs::*;
+    pub use std::collections::HashMap;
 }
 mod components;
 mod control_state;
+mod init;
+mod interactionmenus;
 mod systems;
 
 ///The gamestate
@@ -14,6 +18,7 @@ pub struct State {
     ecs: World,
     key: Option<VirtualKeyCode>,
     controlstate: ControlState,
+    int_menu_db: InteractionMenuDatabase,
     // player: Entity,
     log: Vec<String>,
 }
@@ -21,10 +26,12 @@ impl State {
     fn new() -> Self {
         let mut ecs = World::new();
         let log: Vec<String> = Vec::new();
+
         Self {
             ecs,
             key: None,
             controlstate: ControlState::InInteraction,
+            int_menu_db: crate::init::init_int_menu_db(),
             log,
         }
     }
