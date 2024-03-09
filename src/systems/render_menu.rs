@@ -11,11 +11,30 @@ fn draw_interaction_menu(state: &mut State) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
     //will need to go through and check to see which ones are visible
-    let mut int_menu_query = state.ecs.query::<&InteractionMenu>();
-    let valid_entries: Vec<String> = Vec::new();
-    for (_, int_menu) in int_menu_query.iter() {
-        
+    let active_interactionmenu = get_active_interactionmenu(state).unwrap();
+    let visible_entries = active_interactionmenu.get_visible_entries(state);
+    let mut valid_entries: Vec<String> = Vec::new();
+    for index in visible_entries.iter() {
+        //get entry text of option and add it to the vec of valid entries
+        valid_entries.push(active_interactionmenu.get_entry(*index).get_entry_text());
     }
+    let mut line_num = 0;
+    //need to print the header of the interaction menu
+    let formatted_header = greedy_word_wrap(active_interactionmenu.get_header_text(), 60);
+    for line in formatted_header {
+        draw_batch.print(Point::new(10, line_num), line);
+        line_num += 1;
+    }
+    line_num += 2;
+    //then print all the visible options
+    let mut option_num = 1;
+    for line in valid_entries {
+        let fmt_option = format!("{}. {}", option_num, line);
+        draw_batch.print(Point::new(2, line_num), fmt_option);
+        line_num += 2;
+        option_num += 1;
+    }
+
     draw_batch.submit(5000).expect("Batch Error");
 }
 

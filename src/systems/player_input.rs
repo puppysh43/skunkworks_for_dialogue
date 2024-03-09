@@ -17,19 +17,110 @@ pub fn player_input(state: &mut State, commands: &mut CommandBuffer) {
 }
 
 fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
+    //get the list of visible entries and index that instead of indexing the interaction menu
+    //directly to make sure the right thing is always selected regardless of what the player can see.
+    let active_interactionmenu = get_active_interactionmenu(state).unwrap();
+    let visible_entries = active_interactionmenu.get_visible_entries(state);
     let key = state.key;
     if key.is_some() {
         match key.unwrap() {
-            VirtualKeyCode::Key1 => commands.spawn(((), IntMenuMOI { index: 0 as usize })),
-            VirtualKeyCode::Key2 => commands.spawn(((), IntMenuMOI { index: 1 as usize })),
-            VirtualKeyCode::Key3 => commands.spawn(((), IntMenuMOI { index: 2 as usize })),
-            VirtualKeyCode::Key4 => commands.spawn(((), IntMenuMOI { index: 3 as usize })),
-            VirtualKeyCode::Key5 => commands.spawn(((), IntMenuMOI { index: 4 as usize })),
-            VirtualKeyCode::Key6 => commands.spawn(((), IntMenuMOI { index: 5 as usize })),
-            VirtualKeyCode::Key7 => commands.spawn(((), IntMenuMOI { index: 6 as usize })),
-            VirtualKeyCode::Key8 => commands.spawn(((), IntMenuMOI { index: 7 as usize })),
-            VirtualKeyCode::Key9 => commands.spawn(((), IntMenuMOI { index: 8 as usize })),
-            VirtualKeyCode::Key0 => commands.spawn(((), IntMenuMOI { index: 9 as usize })),
+            VirtualKeyCode::Key1 => commands.spawn((
+                (),
+                IntMenuMOI {
+                    index: visible_entries[0],
+                },
+            )),
+            VirtualKeyCode::Key2 => {
+                //make sure the play even has this many options before sending an MOI!
+                if visible_entries.len() > 1 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[1],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key3 => {
+                if visible_entries.len() > 2 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[2],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key4 => {
+                if visible_entries.len() > 3 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[3],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key5 => {
+                if visible_entries.len() > 4 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[4],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key6 => {
+                if visible_entries.len() > 5 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[5],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key7 => {
+                if visible_entries.len() > 6 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[6],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key8 => {
+                if visible_entries.len() > 7 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[7],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key9 => {
+                if visible_entries.len() > 8 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[8],
+                        },
+                    ))
+                }
+            }
+            VirtualKeyCode::Key0 => {
+                if visible_entries.len() > 9 {
+                    commands.spawn((
+                        (),
+                        IntMenuMOI {
+                            index: visible_entries[9],
+                        },
+                    ))
+                }
+            }
             _ => {
                 //do nothing!
             }

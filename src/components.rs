@@ -1,25 +1,17 @@
-//this will hold all the components for the ECS
 use crate::prelude::*;
-
-//have enum that wraps if its a boolean or a degree of success to make data components more generic
-
 use crate::State;
+
 #[derive(Clone, Debug, PartialEq)]
 ///Simple wrapper component that holds the key to accessing the entity's related interaction menu.
-pub struct InteractionMenuKey(String);
+pub struct InteractionMenuKey(pub String);
 
 #[derive(Copy, Clone, Debug)]
 ///Tagging component used to let the game know which interaction menu is active!
 pub struct ActiveInteractionMenu;
 
-//this will need to check the worldstate and then both produce a change in the world
-//(probably mostly by commandbuffer and NOT direct state access)
-//then there needs to be some sort of way to communicate between this and the
-
-///MOI to communicate what option
+///MOI to communicate what option in an interaction menu was chosen
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct IntMenuMOI {
-    // int_menu_selected: usize,//this will be used later in the toy by
     pub index: usize,
 }
 #[derive(Clone, Copy, Debug, PartialEq)]

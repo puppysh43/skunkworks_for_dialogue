@@ -59,12 +59,34 @@ impl InteractionMenu {
     pub fn get_entry(&self, index: usize) -> IntMenuEntry {
         self.options[index].clone()
     }
+    ///This method returns a vector of all the indexes of entries visible to the player
+    ///this vector can easily be iterated over for either interpreting input when
+    ///selecting an option or finding what to display in yr UI interface of choice
+    pub fn get_visible_entries(&self, state: &State) -> Vec<usize> {
+        let mut vis_entries: Vec<usize> = Vec::new();
+        let mut entries_index: usize = 0;
+        //iterate through all entries in the current menu
+        for entry in self.options.iter() {
+            //check each entry in the menu if the visibility conditions are met
+            if entry.check_visibility_condition(state) == true {
+                //if they are add them to the vec of usizes
+                vis_entries.push(entries_index)
+            }
+            entries_index += 1; //increment the index to track where in the vec we are
+        }
+        //return the vector of the indexes of all the menu entries that can be shown
+        vis_entries
+    }
+    ///Get the header of the interaction menu for printing purposes
+    pub fn get_header_text(&self) -> String {
+        self.header.clone()
+    }
 }
-#[derive(Clone, Debug)]
 ///This is the base datatype for every node. It contains the text shown when displaying
 ///all options in the interaction menu, optional visibility conditions when at the root
 ///of the menu, optional checks and consequences, and the different strings that will
 ///be displayed depending on the result of aformentioned checks and consequences.
+#[derive(Clone, Debug)]
 pub struct IntMenuEntry {
     ///The text displayed on the root level of the interaction menu describing what the
     ///option actually is (ex. "[Strength Check] Push The Boulder")
@@ -95,6 +117,24 @@ impl IntMenuEntry {
             c_and_c,
             result_text,
         }
+    }
+    ///Check if an interaction menu can be
+    pub fn check_visibility_condition(&self, state: &State) -> bool {
+        //an interaction menu entry can
+        if self.vis_condition.is_some() {
+            //if there's a visibility condition we can safely unwrap it and run it on the state
+            //this function was given.
+            let vis_check = self.vis_condition.unwrap();
+            vis_check(state)
+        } else {
+            //if there's no visibility conditions then the option is always
+            //supposed to be visible so just return true.
+            true
+        }
+    }
+    ///returns the header text of the interaction menu entry as a string slice for the purpose of printing
+    pub fn get_entry_text(&self) -> String {
+        self.entry_text.clone()
     }
 }
 ///Datatype used for checking if an interaction menu entry should be displayed

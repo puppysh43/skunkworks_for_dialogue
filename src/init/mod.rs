@@ -14,3 +14,11 @@ pub fn init_int_menu_db() -> InteractionMenuDatabase {
     int_menu_db_contents.insert("Boulder".to_string(), boulder);
     InteractionMenuDatabase::new(int_menu_db_contents)
 }
+
+pub fn init_ecs(ecs: &mut World) {
+    ecs.spawn((
+        (),
+        InteractionMenuKey("Boulder".to_string()),
+        ActiveInteractionMenu,
+    ));
+}

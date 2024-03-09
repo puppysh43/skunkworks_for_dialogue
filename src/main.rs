@@ -2,6 +2,7 @@ mod prelude {
     pub use crate::components::*;
     pub use crate::control_state::*;
     pub use crate::interactionmenus::*;
+    pub use crate::intmenu_library::*;
     pub use crate::State;
     pub use bracket_lib::prelude::*;
     pub use hecs::*;
@@ -11,6 +12,7 @@ mod components;
 mod control_state;
 mod init;
 mod interactionmenus;
+mod intmenu_library;
 mod systems;
 
 ///The gamestate
@@ -26,7 +28,7 @@ impl State {
     fn new() -> Self {
         let mut ecs = World::new();
         let log: Vec<String> = Vec::new();
-
+        init_ecs(&mut ecs);
         Self {
             ecs,
             key: None,
@@ -46,6 +48,7 @@ impl GameState for State {
         render_draw_buffer(ctx).expect("Render error")
     }
 }
+use init::init_ecs;
 use prelude::*;
 fn main() -> BError {
     let context = BTermBuilder::simple80x50()
