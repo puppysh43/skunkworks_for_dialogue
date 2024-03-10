@@ -104,7 +104,8 @@ impl IntMenuChoice {
             result_text,
         }
     }
-    ///Check if an interaction menu can be
+    ///Method that checks the gamestate against the visibility conditions of
+    ///the interaction menu choice and returns a boolean
     pub fn check_visibility_condition(&self, state: &State) -> bool {
         //an interaction menu entry can
         if self.vis_condition.is_some() {
@@ -143,6 +144,8 @@ impl IntMenuChoice {
             self.result_text.options[0].clone()
         }
     }
+    ///Method that lets the checks and consequences logic of the interaction menu choice
+    ///have read-write access to the gamestate.
     pub fn run_checks_and_consequences(
         &self,
         state: &mut State,
@@ -158,10 +161,11 @@ impl IntMenuChoice {
         }
     }
 }
-///Datatype used for checking if an interaction menu entry should be displayed
+///Datatype used for checking if an interaction menu choice should be displayed
 ///it should only ever need read-only access (non-mutable reference) to the gamestate
 ///and based on that will return a bool representing if it can be shown or not.
 type VisCondition = fn(&State) -> bool;
+///Type used for
 type ChecksAndConsequences = fn(&mut State, &mut CommandBuffer) -> Option<ChoiceResult>;
 
 #[derive(Clone, Debug, PartialEq)]
