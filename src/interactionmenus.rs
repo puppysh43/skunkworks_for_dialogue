@@ -1,23 +1,8 @@
 use crate::prelude::*;
-/* The interaction menu will be a simple menu where the player can view multiple
-options and select an entry.
-- Each entry will be able to be viewed or not depending on conditions set by each entry
-(for example, having a certain skill level or perk)
-- it will have a string containing what is initially displayed in the menu
-ex - "[strength check] try to push boulder"
-- it can contain some kind of function that either produces a bool or maybe a result enum
-(failure, partial success, full success)
-- it can also not require one at all
-- it will then have results that it will act on/a single function it will execute (will need to work out how to make borrowchecker here happy.)
-- this will then print something to the screen/UI
-- before going back to the menu
-
-*/
-
 ///This is the root level data structure that contains all Interaction Menus for
 ///every entity in yr game. To play nice with the borrowchecker it will never
 ///give you direct access to them after being constructed and will only give you
-///a clone of a specific menu
+///a clone of a specific interaction menu
 pub struct InteractionMenuDatabase {
     contents: HashMap<String, InteractionMenu>,
 }
@@ -26,7 +11,7 @@ impl InteractionMenuDatabase {
         Self { contents }
     }
     pub fn get_interaction_menu(&self, key: String) -> Option<InteractionMenu> {
-        if self.contents.contains_key(&key) == true {
+        if self.contents.contains_key(&key) {
             let int_menu = self.contents.get(&key).unwrap().clone();
             Some(int_menu)
         } else {
@@ -40,24 +25,25 @@ impl InteractionMenuDatabase {
 ///that isn't dialogue. Ex. a boulder blocking a doorway that can be pushed w/ a str
 ///check, destroyed with an explosive item, or moved if you have NPC help.
 pub struct InteractionMenu {
-    header: String, //this is the string displayed that describes the object being interacted with
-    pub options: Vec<IntMenuEntry>,
+    ///The header contains the text describing the in-game situation the interaction menu is representing
+    header: String,
+    pub choices: Vec<IntMenuChoice>,
 }
 impl InteractionMenu {
-    pub fn new(header: String, options: Vec<IntMenuEntry>) -> Self {
-        InteractionMenu { header, options }
+    pub fn new(header: String, choices: Vec<IntMenuChoice>) -> Self {
+        InteractionMenu { header, choices }
     }
     pub fn new_blank(header: String) -> Self {
         InteractionMenu {
             header,
-            options: Vec::new(),
+            choices: Vec::new(),
         }
     }
-    pub fn add_entry(&mut self, entry: IntMenuEntry) {
-        self.options.push(entry);
+    pub fn add_entry(&mut self, entry: IntMenuChoice) {
+        self.choices.push(entry);
     }
-    pub fn get_entry(&self, index: usize) -> IntMenuEntry {
-        self.options[index].clone()
+    pub fn get_entry(&self, index: usize) -> IntMenuChoice {
+        self.choices[index].clone()
     }
     ///This method returns a vector of all the indexes of entries visible to the player
     ///this vector can easily be iterated over for either interpreting input when
@@ -66,7 +52,7 @@ impl InteractionMenu {
         let mut vis_entries: Vec<usize> = Vec::new();
         let mut entries_index: usize = 0;
         //iterate through all entries in the current menu
-        for entry in self.options.iter() {
+        for entry in self.choices.iter() {
             //check each entry in the menu if the visibility conditions are met
             if entry.check_visibility_condition(state) == true {
                 //if they are add them to the vec of usizes
@@ -87,7 +73,7 @@ impl InteractionMenu {
 ///of the menu, optional checks and consequences, and the different strings that will
 ///be displayed depending on the result of aformentioned checks and consequences.
 #[derive(Clone, Debug)]
-pub struct IntMenuEntry {
+pub struct IntMenuChoice {
     ///The text displayed on the root level of the interaction menu describing what the
     ///option actually is (ex. "[Strength Check] Push The Boulder")
     entry_text: String,
@@ -104,7 +90,7 @@ pub struct IntMenuEntry {
     ///Each entry will have at least one piece of text that displayed after that option has been chosen
     result_text: ResultText, //vec of different things that can be printed to the screen as a result, indexed by casting the result into a usize for accessing the vec of strings
 }
-impl IntMenuEntry {
+impl IntMenuChoice {
     pub fn new(
         entry_text: String,
         vis_condition: Option<VisCondition>,

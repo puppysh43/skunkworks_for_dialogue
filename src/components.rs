@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use crate::State;
 
 ///Component that tags an entity as the player
 #[derive(Clone, Copy, Debug)]
@@ -13,14 +12,14 @@ pub struct InteractionMenuKey(pub String);
 ///Tagging component used to let the game know which interaction menu is active!
 pub struct ActiveInteractionMenu;
 
-///MOI to communicate what option in an interaction menu was chosen
+///MOI to communicate what choice in an interaction menu was selected by the player
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub struct IntMenuMOI {
+pub struct InteractionMenuChoiceMOI {
     pub index: usize,
 }
 #[derive(Clone, Copy, Debug, PartialEq)]
 ///MOI that carries the result of an interaction menu
-pub struct IntMenuResult {
+pub struct InteractionMenuResult {
     pub choice_result: Option<ChoiceResult>,
     pub current_option_index: usize,
 }

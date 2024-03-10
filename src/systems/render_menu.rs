@@ -44,8 +44,8 @@ fn draw_result(state: &mut State) {
     //get the active interaction menu to interface with
     let active_interactionmenu = get_active_interactionmenu(state);
     //var to hold result outside of query
-    let mut interactionmenu_result: Option<IntMenuResult> = None;
-    for (_moi_id, moi) in state.ecs.query::<&IntMenuResult>().iter() {
+    let mut interactionmenu_result: Option<InteractionMenuResult> = None;
+    for (_moi_id, moi) in state.ecs.query::<&InteractionMenuResult>().iter() {
         interactionmenu_result = Some(moi.clone());
     }
     let result_text = active_interactionmenu

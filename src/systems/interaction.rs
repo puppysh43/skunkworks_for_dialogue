@@ -5,7 +5,7 @@ pub fn process_interactions(state: &mut State, commands: &mut CommandBuffer) {
     //filler variable for the index you need to access
     let mut index: Option<usize> = None;
     //query to actually get the index for you in the normal MOI processing idiom
-    for (moi_id, moi) in state.ecs.query::<&IntMenuMOI>().iter() {
+    for (moi_id, moi) in state.ecs.query::<&InteractionMenuChoiceMOI>().iter() {
         index = Some(moi.index);
         commands.despawn(moi_id);
     }
@@ -17,7 +17,7 @@ pub fn process_interactions(state: &mut State, commands: &mut CommandBuffer) {
             .run_checks_and_consequences(state, commands);
         commands.spawn((
             (),
-            IntMenuResult {
+            InteractionMenuResult {
                 choice_result: cnc_result,
                 current_option_index: index.unwrap(),
             },

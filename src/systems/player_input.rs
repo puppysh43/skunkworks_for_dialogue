@@ -28,7 +28,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 1 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[0],
                         },
                     ));
@@ -39,7 +39,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 2 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[1],
                         },
                     ));
@@ -49,7 +49,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 3 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[2],
                         },
                     ));
@@ -59,7 +59,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 4 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[3],
                         },
                     ));
@@ -69,7 +69,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 5 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[4],
                         },
                     ));
@@ -79,7 +79,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 6 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[5],
                         },
                     ));
@@ -89,7 +89,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 7 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[6],
                         },
                     ));
@@ -99,7 +99,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 8 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[7],
                         },
                     ));
@@ -109,7 +109,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 9 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[8],
                         },
                     ));
@@ -119,7 +119,7 @@ fn interaction_input(state: &mut State, commands: &mut CommandBuffer) {
                 if visible_entries.len() >= 10 {
                     commands.spawn((
                         (),
-                        IntMenuMOI {
+                        InteractionMenuChoiceMOI {
                             index: visible_entries[9],
                         },
                     ));
@@ -143,7 +143,7 @@ fn reading_result(state: &mut State) {
         match key.unwrap() {
             VirtualKeyCode::Escape | VirtualKeyCode::Space | VirtualKeyCode::Return => {
                 state.controlstate = ControlState::InInteraction;
-                for (moi_id, _) in state.ecs.query::<&IntMenuResult>().iter() {
+                for (moi_id, _) in state.ecs.query::<&InteractionMenuResult>().iter() {
                     commands.despawn(moi_id);
                 }
                 commands.run_on(&mut state.ecs);

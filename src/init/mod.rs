@@ -3,14 +3,14 @@ use crate::prelude::*;
 pub fn init_int_menu_db() -> InteractionMenuDatabase {
     let mut int_menu_db_contents: HashMap<String, InteractionMenu> = HashMap::new();
     let mut boulder = InteractionMenu::new_blank("A large boulder lies in front of you, blocking the tunnel you need to pass through to reach your goal. It looks immensely heavy, a craggy face of granite only the strongest adventurers could move.".to_string());
-    let examine_boulder = IntMenuEntry::new(
+    let examine_boulder = IntMenuChoice::new(
         "Examine The Boulder".to_string(),
         None,
         None,
         ResultText::new_static_result_text("Despite its invincible exterior, the boulder is spiderwebbed with countless hairline fractures suggesting it could easily be broken apart with explosives or digging equipment.".to_string())
     );
     boulder.add_entry(examine_boulder);
-    let move_boulder = IntMenuEntry::new("[Athletics Check] Try and push the boulder aside.".to_string(), None,
+    let move_boulder = IntMenuChoice::new("[Athletics Check] Try and push the boulder aside.".to_string(), None,
     Some(move_boulder_skillcheck), ResultText::new_deg_of_success_result_text("You fail to move the boulder at all, and are left only sweaty and out of breath for your effort".to_string(),
             "You're able to rock the boulder an an axis just enough to rotate it in the hallway, shifting it enough to leave a small crack. You can probably fit, but it might hurt.".to_string() , 
         "In a feat of herculean strength you're able to completely push the boulder away from the entrance of the tunnel, clearing your way.".to_string()));
