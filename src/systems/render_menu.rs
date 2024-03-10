@@ -41,6 +41,22 @@ fn draw_interaction_menu(state: &mut State) {
 fn draw_result(state: &mut State) {
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
+    //get the active interaction menu to interface with
+    let active_interactionmenu = get_active_interactionmenu(state);
+    //var to hold result outside of query
+    let mut interactionmenu_result: Option<IntMenuResult> = None;
+    for (_moi_id, moi) in state.ecs.query::<&IntMenuResult>().iter() {
+        interactionmenu_result = Some(moi.clone());
+    }
+    let result_text = active_interactionmenu
+        .unwrap()
+        .get_entry(interactionmenu_result.unwrap().current_option_index)
+        .get_result_text(interactionmenu_result.unwrap().choice_result);
+    let mut print_y = 2;
+    for line in greedy_word_wrap(result_text, 60) {
+        draw_batch.print(Point::new(2, print_y), line);
+        print_y += 1;
+    }
     //to draw the result we need to query the result MOI and then feed it into the active interaction menu entry
     //to get the result text that needs to be displayed on screen
     draw_batch.submit(5000).expect("Batch Error");

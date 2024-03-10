@@ -136,6 +136,41 @@ impl IntMenuEntry {
     pub fn get_entry_text(&self) -> String {
         self.entry_text.clone()
     }
+    ///returns the result text for the purpose of printing or otherwise processing
+    pub fn get_result_text(&self, choice: Option<ChoiceResult>) -> String {
+        //testing if choice is some
+        if choice.is_some() {
+            //actually access the contents
+            match choice.unwrap() {
+                ChoiceResult::BinaryResult(result) => match result {
+                    false => self.result_text.options[0].clone(),
+                    true => self.result_text.options[1].clone(),
+                },
+                ChoiceResult::DegOfSuccess(result) => match result {
+                    DegreeOfSuccess::Failure => self.result_text.options[0].clone(),
+                    DegreeOfSuccess::PartialSuccess => self.result_text.options[1].clone(),
+                    DegreeOfSuccess::FullSuccess => self.result_text.options[2].clone(),
+                },
+            }
+        } else {
+            //if there's no result it's b/c there's only one way it'll go so just print the one result
+            self.result_text.options[0].clone()
+        }
+    }
+    pub fn run_checks_and_consequences(
+        &self,
+        state: &mut State,
+        commands: &mut CommandBuffer,
+    ) -> Option<ChoiceResult> {
+        //if there are checks and consequences unwrap and run it.
+        if self.c_and_c.is_some() {
+            let checks_and_consequences = self.c_and_c.unwrap();
+            let result = checks_and_consequences(state, commands);
+            result
+        } else {
+            None
+        }
+    }
 }
 ///Datatype used for checking if an interaction menu entry should be displayed
 ///it should only ever need read-only access (non-mutable reference) to the gamestate
@@ -178,28 +213,6 @@ impl ResultText {
     ) -> Self {
         Self {
             options: vec![failure, partial_success, full_success],
-        }
-    }
-    ///retrieves the appropriate string for whatever result the chosen interaction menu
-    ///entry has created.
-    pub fn get(&self, choice: Option<ChoiceResult>) -> String {
-        //testing
-        if choice.is_some() {
-            //actually access the contents
-            match choice.unwrap() {
-                ChoiceResult::BinaryResult(result) => match result {
-                    false => self.options[0].clone(),
-                    true => self.options[1].clone(),
-                },
-                ChoiceResult::DegOfSuccess(result) => match result {
-                    DegreeOfSuccess::Failure => self.options[0].clone(),
-                    DegreeOfSuccess::PartialSuccess => self.options[1].clone(),
-                    DegreeOfSuccess::FullSuccess => self.options[2].clone(),
-                },
-            }
-        } else {
-            //if there's no result it's b/c there's only one way it'll go so just print the one result
-            self.options[0].clone()
         }
     }
 }

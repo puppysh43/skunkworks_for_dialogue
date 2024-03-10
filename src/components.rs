@@ -1,6 +1,10 @@
 use crate::prelude::*;
 use crate::State;
 
+///Component that tags an entity as the player
+#[derive(Clone, Copy, Debug)]
+pub struct Player;
+
 #[derive(Clone, Debug, PartialEq)]
 ///Simple wrapper component that holds the key to accessing the entity's related interaction menu.
 pub struct InteractionMenuKey(pub String);
@@ -16,7 +20,10 @@ pub struct IntMenuMOI {
 }
 #[derive(Clone, Copy, Debug, PartialEq)]
 ///MOI that carries the result of an interaction menu
-pub struct IntMenuResult(Option<ChoiceResult>);
+pub struct IntMenuResult {
+    pub choice_result: Option<ChoiceResult>,
+    pub current_option_index: usize,
+}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DegreeOfSuccess {

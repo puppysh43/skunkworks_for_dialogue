@@ -21,7 +21,7 @@ pub struct State {
     key: Option<VirtualKeyCode>,
     controlstate: ControlState,
     int_menu_db: InteractionMenuDatabase,
-    // player: Entity,
+    player: Entity,
     log: Vec<String>,
 }
 impl State {
@@ -29,11 +29,13 @@ impl State {
         let mut ecs = World::new();
         let log: Vec<String> = Vec::new();
         init_ecs(&mut ecs);
+        let player = ecs.query::<&Player>().iter().nth(0).unwrap().0;
         Self {
             ecs,
             key: None,
             controlstate: ControlState::InInteraction,
             int_menu_db: crate::init::init_int_menu_db(),
+            player,
             log,
         }
     }
