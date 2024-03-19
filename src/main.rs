@@ -1,8 +1,10 @@
 mod prelude {
     pub use crate::components::*;
     pub use crate::control_state::*;
+    pub use crate::dialogue::*;
     pub use crate::interactionmenus::*;
     pub use crate::intmenu_library::*;
+    pub use crate::quests::*;
     pub use crate::State;
     pub use bracket_lib::prelude::*;
     pub use hecs::*;
@@ -10,9 +12,11 @@ mod prelude {
 }
 mod components;
 mod control_state;
+mod dialogue;
 mod init;
 mod interactionmenus;
 mod intmenu_library;
+mod quests;
 mod systems;
 
 ///The gamestate
@@ -22,7 +26,7 @@ pub struct State {
     controlstate: ControlState,
     int_menu_db: InteractionMenuDatabase,
     player: Entity,
-    log: Vec<String>,
+    quest_db: QuestDatabase,
 }
 impl State {
     fn new() -> Self {
