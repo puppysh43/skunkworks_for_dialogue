@@ -44,6 +44,17 @@ impl Quest {
         }
         return None;
     }
+
+    pub fn step_mut(&mut self, step_name: &str) -> Option<&mut Quest> {
+     for (choicename, mut questnode) in self.choices.iter() {
+            if step_name == choicename {
+                return Some(&mut questnode);
+            } else {
+                return None;
+            }
+        }
+        return None;
+    }
     pub fn complete(&mut self) {
         self.is_complete = true;
     }
