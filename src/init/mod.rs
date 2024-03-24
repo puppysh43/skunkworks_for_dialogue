@@ -76,32 +76,25 @@ fn move_boulder_skillcheck(
             quest_buffer
                 .step("PushedBoulder")
                 .unwrap()
-                .step("PartialSuccess")
+                .step_mut("PartialSuccess")
                 .unwrap()
                 .complete();
 
             //
-            state
-                .quest_db
-                .quest("Boulder")
-                .step("PushedBoulder")
-                .unwrap()
-                .step("PartialSuccess")
-                .unwrap()
-                .complete();
+            state.quest_db.update("Boulder", quest_buffer);
             return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::PartialSuccess));
         }
         RollResult::FullSuccess => {
             //in the real game this would go into the state and delete the position component
             //of the boulder so that it would dissapear from the map and no longer block collissions
-            state
-                .quest_db
-                .quest("Boulder")
+            let mut quest_buffer = state.quest_db.quest("Boulder");
+            quest_buffer
                 .step("PushedBoulder")
                 .unwrap()
-                .step("FullSuccess")
+                .step_mut("FullSuccess")
                 .unwrap()
                 .complete();
+            state.quest_db.update("Boulder", quest_buffer);
             return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::FullSuccess));
         }
     }
