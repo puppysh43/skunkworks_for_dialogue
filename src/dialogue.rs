@@ -10,5 +10,5 @@ pub struct DialogueTree {
 
 pub struct DialogueNode {
     npc_text: String,     //what the npc is saying in response to the previous choice
-    choices: vec<String>, //a collection of keys pointing to
+    choices: Vec<String>, //a collection of keys pointing to
 }

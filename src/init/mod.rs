@@ -35,10 +35,8 @@ pub fn init_int_menu_db() -> InteractionMenuDatabase {
             "You're able to rock the boulder an an axis just enough to rotate it in the hallway before it gets stuck again, shifting it enough to leave a small crack. You can probably fit, but it might hurt.".to_string() , 
         "In a feat of herculean strength you're able to completely push the boulder away from the entrance of the tunnel, clearing your way.".to_string()));
     boulder.add_entry(move_boulder);
-    let squeeze_past = IntMenuChoice::new("[Acrobatics Check] Try and squeeze through the gap between the boulder and the wall.".to_string(), Some(has_boulder_part_moved), Some(
-
-        
-    ), ResultText::new_deg_of_success_result_text(String::from("You try to squeeze through the gap between the boulder and the wall but can't quite make it, hurting yourself in the process."), String::from("You at first slip through with ease, but part of you catches on the rough rock and you find yourself stuck. Panic setting in you're able to wriggle free, realizing only after the adrenaline wears off that a sharp outcrop of stone has gouged your leg. [-1 HP]"), String::from("With a single fluid movement you're able to effortlessly squeeze through the gap.")) );
+    let squeeze_past = IntMenuChoice::new("[Acrobatics Check] Try and squeeze through the gap between the boulder and the wall.".to_string(), Some(has_boulder_part_moved), Some(squeeze_boulder_skillcheck), ResultText::new_deg_of_success_result_text(String::from("You try to squeeze through the gap between the boulder and the wall but can't quite make it, hurting yourself in the process."), String::from("You at first slip through with ease, but part of you catches on the rough rock and you find yourself stuck. Panic setting in you're able to wriggle free, realizing only after the adrenaline wears off that a sharp outcrop of stone has gouged your leg. [-1 HP]"), String::from("With a single fluid movement you're able to effortlessly squeeze through the gap.")) );
+    boulder.add_entry(squeeze_past);
     int_menu_db_contents.insert("Boulder".to_string(), boulder);
     InteractionMenuDatabase::new(int_menu_db_contents)
 }
@@ -72,6 +70,17 @@ fn move_boulder_skillcheck(
             //in a real game this would switch a flag in the state that was hiding another
             //option in the menu to let the player squeeze through in exchange for taking
             //damage if they fail a reflexes/dexterity check
+
+            //testing
+            let mut quest_buffer = state.quest_db.quest("Boulder");
+            quest_buffer
+                .step("PushedBoulder")
+                .unwrap()
+                .step("PartialSuccess")
+                .unwrap()
+                .complete();
+
+            //
             state
                 .quest_db
                 .quest("Boulder")
@@ -79,7 +88,7 @@ fn move_boulder_skillcheck(
                 .unwrap()
                 .step("PartialSuccess")
                 .unwrap()
-                .flag_complete();
+                .complete();
             return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::PartialSuccess));
         }
         RollResult::FullSuccess => {
@@ -92,19 +101,22 @@ fn move_boulder_skillcheck(
                 .unwrap()
                 .step("FullSuccess")
                 .unwrap()
-                .flag_complete();
+                .complete();
             return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::FullSuccess));
         }
     }
 }
-fn squeeze_boulder_skillcheck(state: &mut State, commands: &mut CommandBuffer) -> Option<ChoiceResult>{
+fn squeeze_boulder_skillcheck(
+    state: &mut State,
+    commands: &mut CommandBuffer,
+) -> Option<ChoiceResult> {
     let player_skills = get_player_skills(state);
     //moving a boulder is a big task, have it a -1 athletics skillcheck
     let check_result = player_skills.skillcheck(SkillType::Reflexes, 0);
     match check_result {
         RollResult::Failure => {
             //remove 1 HP and do NOT move the player
-                        return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::Failure));
+            return Some(ChoiceResult::DegOfSuccess(DegreeOfSuccess::Failure));
         }
         RollResult::PartialSuccess => {
             //in the full game you would move the player, maybe make it so they can't move again

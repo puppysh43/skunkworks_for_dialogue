@@ -8,10 +8,15 @@ impl QuestDatabase {
     pub fn new(contents: HashMap<String, Quest>) -> Self {
         Self { contents }
     }
-    pub fn quest(&mut self, key: &str) -> &Quest {
+    pub fn quest(&mut self, key: &str) -> Quest {
         self.contents
             .get(key)
             .expect("Invalid key caused failure to retrieve quest.")
+            .clone()
+    }
+    //make update quest function
+    pub fn update(&mut self, key: &str, value: Quest) {
+        self.contents.insert(key.to_string(), value);
     }
 }
 #[derive(Clone, Debug)]
@@ -28,8 +33,8 @@ impl Quest {
             choices,
         }
     }
-    // pub fn new_
-    pub fn step(&mut self, step_name: &str) -> Option<&Quest> {
+
+    pub fn step(&self, step_name: &str) -> Option<&Quest> {
         for (choicename, questnode) in self.choices.iter() {
             if step_name == choicename {
                 return Some(questnode);
@@ -39,7 +44,7 @@ impl Quest {
         }
         return None;
     }
-    pub fn flag_complete(&mut self) {
+    pub fn complete(&mut self) {
         self.is_complete = true;
     }
     pub fn status(&self) -> bool {

@@ -40,7 +40,7 @@ impl State {
             controlstate: ControlState::InInteraction,
             int_menu_db: crate::init::init_int_menu_db(),
             player,
-            log,
+            quest_db: crate::init::init_quest_db(),
         }
     }
 }
